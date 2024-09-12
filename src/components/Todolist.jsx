@@ -15,6 +15,9 @@ export default function Todolist() {
     }
   };
 
+  const handleDelete = (index) =>
+    setTodos(todos.filter((todo, i) => i !== index));
+
   return (
     <>
       <h3 style={{ background: "black", color: "white" }}>Simple Todolist</h3>
@@ -53,6 +56,9 @@ export default function Todolist() {
             <tr key={index}>
               <td>{todo.duedate}</td>
               <td>{todo.desc}</td>
+              <td>
+                <button onClick={() => handleDelete(index)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
