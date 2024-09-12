@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://AnnieTran2023.github.io/TodoList-React"
+  "homepage": "https://AnnieTran2023.github.io/TodoList-React",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build" ,
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
