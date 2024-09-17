@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TodoTable from "./TodoTable";
 
 export default function Todolist() {
   const [todo, setTodo] = useState({ desc: "", duedate: "" });
@@ -15,8 +16,7 @@ export default function Todolist() {
     }
   };
 
-  const handleDelete = (index) =>
-    setTodos(todos.filter((todo, i) => i !== index));
+  const handleDelete = (index) => setTodos(todos.filter((_, i) => i !== index));
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function Todolist() {
       />
       <span>Due date:</span>
       <input
-        type="text"
+        type="date"
         placeholder="Type due date..."
         onChange={(event) => setTodo({ ...todo, duedate: event.target.value })}
         value={todo.duedate}
@@ -46,23 +46,7 @@ export default function Todolist() {
         }}
       />
       <button onClick={addTodo}>Add</button>
-      <table style={{ width: "100%", marginTop: 15 }}>
-        <tbody>
-          <tr>
-            <th>Due date</th>
-            <th>Description</th>
-          </tr>
-          {todos.map((todo, index) => (
-            <tr key={index}>
-              <td>{todo.duedate}</td>
-              <td>{todo.desc}</td>
-              <td>
-                <button onClick={() => handleDelete(index)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TodoTable todos={todos} handleDelete={handleDelete} />
     </>
   );
 }
