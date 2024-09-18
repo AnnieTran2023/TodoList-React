@@ -1,9 +1,19 @@
 import { useState } from "react";
-import TodoTable from "./TodoTable";
+
+import { AgGridReact } from "ag-grid-react";
+
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css"; // Material Design theme
 
 export default function Todolist() {
-  const [todo, setTodo] = useState({ desc: "", duedate: "" });
+  const [todo, setTodo] = useState({ desc: "", duedate: "", priority: " " });
   const [todos, setTodos] = useState([]);
+
+  const [columnDefs, setColumnDefs] = useState([
+    { field: "duedate", floatingFilter: true, filter: true },
+    { field: "desc", floatingFilter: true, filter: true },
+    { field: "priority", floatingFilter: true, filter: true },
+  ]);
 
   const addTodo = () => {
     if (!todo.desc) {
@@ -12,7 +22,7 @@ export default function Todolist() {
       alert("Type a date!");
     } else {
       setTodos([todo, ...todos]);
-      setTodo({ desc: "", duedate: "" });
+      setTodo({ desc: "", duedate: "", priority: "" });
     }
   };
 
@@ -33,6 +43,16 @@ export default function Todolist() {
           marginLeft: 5,
         }}
       />
+      <input
+        placeholder="Priority..."
+        onChange={(event) => setTodo({ ...todo, priority: event.target.value })}
+        value={todo.priority}
+        style={{
+          height: 35,
+          marginRight: 20,
+          marginLeft: 5,
+        }}
+      />
       <span>Due date:</span>
       <input
         type="date"
@@ -46,7 +66,9 @@ export default function Todolist() {
         }}
       />
       <button onClick={addTodo}>Add</button>
-      <TodoTable todos={todos} handleDelete={handleDelete} />
+      <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
+        <AgGridReact rowData={todos} columnDefs={columnDefs} />
+      </div>
     </>
   );
 }
