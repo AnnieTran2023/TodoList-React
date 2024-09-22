@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css"; // Material Design theme
 
 export default function Todolist() {
-  const [todo, setTodo] = useState({ desc: "", duedate: "", priority: " " });
+  const [todo, setTodo] = useState({ desc: "", duedate: "", priority: "Low" });
   const [todos, setTodos] = useState([]);
 
   const [columnDefs, setColumnDefs] = useState([
@@ -43,8 +43,11 @@ export default function Todolist() {
           marginLeft: 5,
         }}
       />
-      <input
-        placeholder="Priority..."
+      <label htmlFor="priority" style={{ marginRight: 10 }}>
+        Priority:
+      </label>
+      <select
+        id="priority"
         onChange={(event) => setTodo({ ...todo, priority: event.target.value })}
         value={todo.priority}
         style={{
@@ -52,7 +55,11 @@ export default function Todolist() {
           marginRight: 20,
           marginLeft: 5,
         }}
-      />
+      >
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
       <span>Due date:</span>
       <input
         type="date"
