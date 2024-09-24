@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 
@@ -8,11 +8,18 @@ import "ag-grid-community/styles/ag-theme-material.css"; // Material Design them
 export default function Todolist() {
   const [todo, setTodo] = useState({ desc: "", duedate: "", priority: "Low" });
   const [todos, setTodos] = useState([]);
+  const gridRef = useRef();
 
   const [columnDefs, setColumnDefs] = useState([
     { field: "duedate", floatingFilter: true, filter: true },
     { field: "desc", floatingFilter: true, filter: true },
-    { field: "priority", floatingFilter: true, filter: true },
+    {
+      field: "priority",
+      floatingFilter: true,
+      filter: true,
+      cellStyle: (params) =>
+        params.value === "High" ? { color: "red" } : { color: "black" },
+    },
   ]);
 
   const addTodo = () => {
@@ -25,8 +32,18 @@ export default function Todolist() {
       setTodo({ desc: "", duedate: "", priority: "" });
     }
   };
-
-  const handleDelete = (index) => setTodos(todos.filter((_, i) => i !== index));
+  
+  const handleDelete = () => {
+    if (gridRef.current.getSelectedNodes().length > 0) {
+      setTodos(
+        todos.filter(
+          (todo, index) => index != gridRef.current.getSelectedNodes()[0].id
+        )
+      );
+    } else {
+      alert("Select a row first!");
+    }
+  };
 
   return (
     <>
@@ -73,8 +90,15 @@ export default function Todolist() {
         }}
       />
       <button onClick={addTodo}>Add</button>
+      <button onClick={handleDelete}>Delete</button>
       <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
-        <AgGridReact rowData={todos} columnDefs={columnDefs} />
+        <AgGridReact
+          ref={gridRef}
+          onGridReady={(params) => (gridRef.current = params.api)}
+          rowData={todos}
+          columnDefs={columnDefs}
+          rowSelection="single"
+        />
       </div>
     </>
   );
