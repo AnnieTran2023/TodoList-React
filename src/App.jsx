@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 function App() {
   return (
     <Container maxWidth="lg">
-      <AppBar position="static">
+      <AppBar position="static" color = "info">
         <Toolbar>
           <Typography variant="h6">My Todos</Typography>
         </Toolbar>

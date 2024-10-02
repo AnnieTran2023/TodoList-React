@@ -8,6 +8,11 @@ import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 export default function Todolist() {
   const [todo, setTodo] = useState({ desc: "", duedate: "", priority: "Low" });
@@ -30,10 +35,10 @@ export default function Todolist() {
     if (!todo.desc) {
       alert("Type a valid todo!");
     } else if (!todo.duedate) {
-      alert("Type a date!");
+      alert("Choose a date!");
     } else {
       setTodos([todo, ...todos]);
-      setTodo({ desc: "", duedate: "", priority: "" });
+      setTodo({ desc: "", duedate: "", priority: "Low" });
     }
   };
 
@@ -41,7 +46,7 @@ export default function Todolist() {
     if (gridRef.current.getSelectedNodes().length > 0) {
       setTodos(
         todos.filter(
-          (todo, index) => index != gridRef.current.getSelectedNodes()[0].id
+          (todo, index) => index !== gridRef.current.getSelectedNodes()[0].id
         )
       );
     } else {
@@ -49,13 +54,15 @@ export default function Todolist() {
     }
   };
 
+  const updateDate = (date) => {
+    const dateFormat = dayjs(date).format("DD-MM-YYYY");
+    console.log(dateFormat);
+    setTodo({ ...todo, duedate: dateFormat });
+  };
+
   return (
     <>
-      <Stack
-        direction="row"
-        spacing={3}
-        justifyContent="center"
-      >
+      <Stack direction="row" spacing={3} justifyContent="center">
         <TextField
           type="text"
           label="Enter todo"
@@ -76,14 +83,9 @@ export default function Todolist() {
           <MenuItem value="Medium">Medium</MenuItem>
           <MenuItem value="High">High</MenuItem>
         </TextField>
-        <TextField
-          label="Date"
-          variant="outlined"
-          onChange={(event) =>
-            setTodo({ ...todo, duedate: event.target.value })
-          }
-          value={todo.duedate}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker onChange={(date) => updateDate(date)} />
+        </LocalizationProvider>
         <Button variant="outlined" endIcon={<AddIcon />} onClick={addTodo}>
           Add
         </Button>
@@ -96,15 +98,26 @@ export default function Todolist() {
           Delete
         </Button>
       </Stack>
-      <div className="ag-theme-material" style={{ width: "100%", height: 500 }}>
-        <AgGridReact
-          ref={gridRef}
-          onGridReady={(params) => (gridRef.current = params.api)}
-          rowData={todos}
-          columnDefs={columnDefs}
-          rowSelection="single"
-        />
-      </div>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={4} // Adds some margin-top
+        sx={{ width: "100%" }} // Makes sure the container takes full width
+      >
+        <div
+          className="ag-theme-material"
+          style={{ width: 600, height: 800 }} // Adjust the width to centralize
+        >
+          <AgGridReact
+            ref={gridRef}
+            onGridReady={(params) => (gridRef.current = params.api)}
+            rowData={todos}
+            columnDefs={columnDefs}
+            rowSelection="single"
+          />
+        </div>
+      </Box>
     </>
   );
 }
