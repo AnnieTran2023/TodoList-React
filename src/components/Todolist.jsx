@@ -46,7 +46,8 @@ export default function Todolist() {
     if (gridRef.current.getSelectedNodes().length > 0) {
       setTodos(
         todos.filter(
-          (todo, index) => index !== gridRef.current.getSelectedNodes()[0].id
+          (todo, index) =>
+            index !== gridRef.current.getSelectedNodes()[0].rowIndex
         )
       );
     } else {
