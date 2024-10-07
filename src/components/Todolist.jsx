@@ -9,13 +9,16 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
 export default function Todolist() {
-  const [todo, setTodo] = useState({ desc: "", duedate: "", priority: "Low" });
+  const [todo, setTodo] = useState({ desc: "", duedate: "", priority: "" });
   const [todos, setTodos] = useState([]);
   const gridRef = useRef();
 
@@ -38,7 +41,7 @@ export default function Todolist() {
       alert("Choose a date!");
     } else {
       setTodos([todo, ...todos]);
-      setTodo({ desc: "", duedate: "", priority: "Low" });
+      setTodo({ desc: "", duedate: "", priority: "" });
     }
   };
 
@@ -71,19 +74,22 @@ export default function Todolist() {
           value={todo.desc}
           variant="outlined"
         />
-        <TextField
-          select
-          label="Priority"
-          value={todo.priority}
-          onChange={(event) =>
-            setTodo({ ...todo, priority: event.target.value })
-          }
-          variant="outlined"
-        >
-          <MenuItem value="Low">Low</MenuItem>
-          <MenuItem value="Medium">Medium</MenuItem>
-          <MenuItem value="High">High</MenuItem>
-        </TextField>
+        <FormControl sx={{ width: 110 }}>
+          <InputLabel id="priority">Priority</InputLabel>
+          <Select
+            labelId="priority"
+            label="Priority"
+            value={todo.priority}
+            onChange={(event) =>
+              setTodo({ ...todo, priority: event.target.value })
+            }
+            variant="outlined"
+          >
+            <MenuItem value="Low">Low</MenuItem>
+            <MenuItem value="Medium">Medium</MenuItem>
+            <MenuItem value="High">High</MenuItem>
+          </Select>
+        </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker onChange={(date) => updateDate(date)} />
         </LocalizationProvider>

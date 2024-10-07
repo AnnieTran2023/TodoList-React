@@ -1,25 +1,35 @@
-import Todolist from "./components/Todolist";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import * as React from "react";
 import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import Todolist from "./components/Todolist";
+import Home from "./components/Home";
 
-function App() {
+export default function LabTabs() {
+  const [value, setValue] = React.useState("1");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <Container maxWidth="lg">
-      <AppBar position="static" color = "info">
-        <Toolbar>
-          <Typography variant="h6">My Todos</Typography>
-        </Toolbar>
-      </AppBar>
-      <Box mt={2}>
-        <Todolist />
-      </Box>
-      <CssBaseline />
-    </Container>
+    <Box sx={{ width: "100%", typography: "body1" }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <TabList onChange={handleChange}>
+            <Tab label="HOME" value="1" />
+            <Tab label="TODO" value="2" />
+          </TabList>
+        </Box>
+        <TabPanel value="1">
+          <Home />
+        </TabPanel>
+        <TabPanel value="2">
+          <Todolist />
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }
-
-export default App;
