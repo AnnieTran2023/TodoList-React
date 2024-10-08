@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/AnnieTran2023/TodoList-React",
+  "homepage": "https://annietran2023.github.io/TodoList-React/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
